@@ -15,6 +15,10 @@
   "bugs": {
     "url": "https://github.com/Senpaizuri/ThunderChicken/issues"
   },
+  "engines": {
+    "node": "v9.11.1",
+    "npm": "6.8.0"
+  },
   "homepage": "https://github.com/Senpaizuri/ThunderChicken#readme",
   "dependencies": {
     "@babel/core": "^7.4.3",
