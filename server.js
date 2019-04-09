@@ -34,7 +34,6 @@ io.on("connection",(ws)=>{
         console.log("a user disconnected")
     })
     ws.on("pixel update",(update)=>{
-        // console.log(update)
         io.emit("pixel update",update)
     })
     ws.on("user registration",(update)=>{
@@ -44,10 +43,10 @@ io.on("connection",(ws)=>{
                 user:user
             })
             console.log(`user ${user} registered`)
-            io.emit("user registration",`<span style="color:${update.color}">${user}</span> has joined`)
+            io.emit("user registration",{msg:`<span style="color:${update.color}">${user}</span> has joined`,user:user})
         } else{
             console.log(`user ${user} already registered`)
-            io.emit("user registration",`<span style="color:${update.color}">${user}</span> has joined`)
+            io.emit("user registration",toString({msg:`<span style="color:${update.color}">${user}</span> has joined`,user:user}))
         }
     })
 })

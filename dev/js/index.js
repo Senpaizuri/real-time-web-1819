@@ -38,34 +38,39 @@
                 })
                 ctx.putImageData(pixel,pos.x,pos.y)
             })
-        
-            socket.on("pixel update",(update)=>{
-                const 
-                    pos = update.pos,
-                    pixel = ctx.createImageData(1,1)
-                
-                pixel.data[0] = update.pixel.r
-                pixel.data[1] = update.pixel.g
-                pixel.data[2] = update.pixel.b
-                pixel.data[3] = update.pixel.a
-        
-                ctx.putImageData(pixel,pos.x,pos.y)
-            })
         }
+
+    socket.on("pixel update",(update)=>{
+        const 
+            pos = update.pos,
+            pixel = ctx.createImageData(1,1)
+        
+        pixel.data[0] = update.pixel.r
+        pixel.data[1] = update.pixel.g
+        pixel.data[2] = update.pixel.b
+        pixel.data[3] = update.pixel.a
+
+        ctx.putImageData(pixel,pos.x,pos.y)
+    })
 
     const form = document.querySelector("form")
 
     form.addEventListener("submit",(e)=>{
         e.preventDefault()
         const name = document.querySelector("#username").value
+        localStorage.setItem("user",name)
         socket.emit("user registration",{user:name,color:document.querySelector("[type=color]").value})
         return false
     })
 
     socket.on("user registration",(e)=>{
-        document.querySelector("#users ul").innerHTML += `<li>${e}</li>`
-        app()
-        form.style.setProperty("display","none")
+        document.querySelector("#users ul").innerHTML += `<li>${e.msg}</li>`
+
+        if(localStorage.getItem("user") == e.user){
+            app()
+            form.style.setProperty("display","none")
+        }
+        
     })
 
 })()
