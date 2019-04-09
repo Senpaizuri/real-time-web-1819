@@ -62,11 +62,18 @@
     return false;
   });
   socket.on("user registration", function (e) {
-    document.querySelector("#users ul").innerHTML += "<li>".concat(e.msg, "</li>");
+    console.log(e.user, localStorage.getItem("user"));
 
-    if (localStorage.getItem("user") == e.user) {
-      app();
-      form.style.setProperty("display", "none");
+    if (e.user) {
+      document.querySelector("ul").innerHTML += "\n                <li>".concat(e.msg, "</li>\n            ");
     }
+
+    if (e.user == localStorage.getItem("user")) {
+      app();
+      console.log("booting app");
+    }
+  });
+  socket.on("online users", function (e) {
+    console.log(e);
   });
 })();

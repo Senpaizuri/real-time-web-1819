@@ -8,16 +8,20 @@ const
     port = process.env.PORT || 5000
 
 let users = []
+let online = []
 let check = (str,arr)=>{
     let q = false
+    let x = 0
     arr.forEach((el,i) => {
         if(arr[i].user == str){
             q = true
+            x = i
         } else{
             q = false
+            x = i
         }
     })
-    return q
+    return {q:q,x:x}
 }
 
 app.use(compression())
@@ -29,25 +33,34 @@ app.get("/",(req,res)=>{
 })
 
 io.on("connection",(ws)=>{
-    console.log("a user connected")
+    let thisUser
+    io.emit("online users",online)
+
     ws.on("disconnect",(ws)=>{
-        console.log("a user disconnected")
+        console.log(`${thisUser} disconnected`)
+        online.splice(online.indexOf(thisUser),1)
+        io.emit("online users",online)
     })
+
     ws.on("pixel update",(update)=>{
         io.emit("pixel update",update)
     })
+
     ws.on("user registration",(update)=>{
         let user = update.user
-        if(!check(user,users)){
+        if(!check(user,users).q){
             users.push({
-                user:user
+                user:user,
+                color:update.color
             })
-            console.log(`user ${user} registered`)
-            io.emit("user registration",{msg:`<span style="color:${update.color}">${user}</span> has joined`,user:user})
-        } else{
-            console.log(`user ${user} already registered`)
-            io.emit("user registration",toString({msg:`<span style="color:${update.color}">${user}</span> has joined`,user:user}))
         }
+        thisUser = user
+        if(online.indexOf(user) < 0){
+            online.push(user)
+        }
+        io.emit("user registration",{msg:`<span style="color:${update.color}">${user}</span> has joined`,user:user})
+        console.log(online,users)
+        io.emit("online users",online)
     })
 })
 

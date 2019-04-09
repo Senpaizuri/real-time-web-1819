@@ -64,13 +64,21 @@
     })
 
     socket.on("user registration",(e)=>{
-        document.querySelector("#users ul").innerHTML += `<li>${e.msg}</li>`
-
-        if(localStorage.getItem("user") == e.user){
-            app()
-            form.style.setProperty("display","none")
+        console.log(e.user,localStorage.getItem("user"))
+        if(e.user){
+            document.querySelector("ul").innerHTML+=
+            `
+                <li>${e.msg}</li>
+            `
         }
-        
+        if(e.user == localStorage.getItem("user")){
+            app()
+            console.log("booting app")
+        }
+    })
+
+    socket.on("online users",(e)=>{
+        console.log(e)
     })
 
 })()
