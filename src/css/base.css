@@ -24,8 +24,36 @@ main {
     width: 25rem;
     image-rendering: -moz-crisp-edges;
     image-rendering: pixelated; }
+  main form {
+    padding: 1rem; }
+    main form label {
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      max-width: 10rem;
+      text-align: center; }
+      main form label span {
+        padding-bottom: 1rem; }
+      main form label input {
+        padding: .5rem .25rem;
+        text-align: center;
+        font-size: 1.25rem; }
   main #users ul {
-    padding: 2rem; }
+    padding: .5rem 1rem;
+    background: #fff;
+    transform: rotate(180deg); }
     main #users ul li {
       margin: .5rem auto;
-      text-align: center; }
+      text-align: center;
+      transform: rotate(-180deg); }
+  main #online {
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap; }
+    main #online div {
+      margin: .5rem; }
+      main #online div div {
+        height: 2rem;
+        width: 2rem;
+        margin: .5rem auto; }

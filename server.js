@@ -34,12 +34,15 @@ app.get("/",(req,res)=>{
 
 io.on("connection",(ws)=>{
     let thisUser
-    io.emit("online users",online)
+    io.emit("online users",users)
 
     ws.on("disconnect",(ws)=>{
         console.log(`${thisUser} disconnected`)
-        online.splice(online.indexOf(thisUser),1)
-        io.emit("online users",online)
+        if(online.indexOf(thisUser) > -1){
+            online.splice(online.indexOf(thisUser),1)
+            users.splice(online.indexOf(thisUser),1)
+        }
+        io.emit("online users",users)
     })
 
     ws.on("pixel update",(update)=>{
@@ -48,7 +51,7 @@ io.on("connection",(ws)=>{
 
     ws.on("user registration",(update)=>{
         let user = update.user
-        if(!check(user,users).q){
+        if(!online.indexOf(user) > -1 && users[online.indexOf(user)] == undefined){
             users.push({
                 user:user,
                 color:update.color
@@ -57,10 +60,12 @@ io.on("connection",(ws)=>{
         thisUser = user
         if(online.indexOf(user) < 0){
             online.push(user)
+            io.emit("user registration",{msg:`<span style="color:${update.color}">${user}</span> has joined`,user:user})
+        }else{
+            io.emit("user registration",{msg:`<span style=color:${users[online.indexOf(user)].color}>${user}</span> changed color to <span style=color:${update.color}>${update.color}</span>`,user:user})
+            users[online.indexOf(user)].color = update.color
         }
-        io.emit("user registration",{msg:`<span style="color:${update.color}">${user}</span> has joined`,user:user})
-        console.log(online,users)
-        io.emit("online users",online)
+        io.emit("online users",users)
     })
 })
 

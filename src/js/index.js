@@ -22,8 +22,7 @@
         "x": Math.trunc(e.layerX / canvas.clientHeight * config.x),
         "y": Math.trunc(e.layerY / canvas.clientWidth * config.y)
       },
-          pixel = ctx.createImageData(1, 1),
-          color = hexToRgb(document.querySelector("[type=color]").value);
+          pixel = ctx.createImageData(1, 1);
       pixel.data[0] = color.r;
       pixel.data[1] = color.g;
       pixel.data[2] = color.b;
@@ -41,6 +40,7 @@
     });
   };
 
+  var color = hexToRgb(document.querySelector("[type=color]").value);
   socket.on("pixel update", function (update) {
     var pos = update.pos,
         pixel = ctx.createImageData(1, 1);
@@ -54,6 +54,7 @@
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     var name = document.querySelector("#username").value;
+    color = hexToRgb(document.querySelector("[type=color]").value);
     localStorage.setItem("user", name);
     socket.emit("user registration", {
       user: name,
@@ -62,18 +63,27 @@
     return false;
   });
   socket.on("user registration", function (e) {
-    console.log(e.user, localStorage.getItem("user"));
-
     if (e.user) {
       document.querySelector("ul").innerHTML += "\n                <li>".concat(e.msg, "</li>\n            ");
     }
 
     if (e.user == localStorage.getItem("user")) {
       app();
-      console.log("booting app");
+      form.querySelector("label").style.setProperty("display", "none");
     }
   });
   socket.on("online users", function (e) {
-    console.log(e);
+    var onlineCont = document.querySelector("#online");
+    onlineCont.innerHTML = "";
+    e.forEach(function (el) {
+      var newDiv = document.createElement("div"),
+          newSpan = document.createElement("span"),
+          newClr = document.createElement("div");
+      newSpan.innerHTML = el.user;
+      newClr.style.setProperty("background", el.color);
+      newDiv.appendChild(newClr);
+      newDiv.appendChild(newSpan);
+      onlineCont.appendChild(newDiv);
+    });
   });
 })();

@@ -27,12 +27,47 @@ main{
         image-rendering: -moz-crisp-edges;
         image-rendering: pixelated;
     }
+    form{
+        padding: 1rem;
+        label{
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            max-width: 10rem;
+            text-align: center;
+            span{
+                padding-bottom: 1rem;
+            }
+            input{
+                padding: .5rem .25rem;
+                text-align: center;
+                font-size: 1.25rem;
+            }
+        }
+    }
     #users{
         ul{
-            padding: 2rem;
+            padding: .5rem 1rem;
+            background: #fff;
+            transform: rotate(180deg);
             li{
                 margin: .5rem auto;
                 text-align: center;
+                transform: rotate(-180deg)
+            }
+        }
+    }
+    #online{
+        padding: 2rem;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        div{
+            margin: .5rem;
+            div{
+                height: 2rem;
+                width: 2rem;
+                margin: .5rem auto;
             }
         }
     }
