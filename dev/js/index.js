@@ -60,9 +60,13 @@
     form.addEventListener("submit",(e)=>{
         e.preventDefault()
         const name = document.querySelector("#username").value
-        color = hexToRgb(document.querySelector("[type=color]").value)
-        localStorage.setItem("user",name)
-        socket.emit("user registration",{user:name,color:document.querySelector("[type=color]").value})
+            if(name.lenght > 3){
+                color = hexToRgb(document.querySelector("[type=color]").value)
+                localStorage.setItem("user",name)
+                socket.emit("user registration",{user:name,color:document.querySelector("[type=color]").value})
+            } else{
+                alert("Please enter a user name")
+            }
         return false
     })
 

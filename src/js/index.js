@@ -54,12 +54,18 @@
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     var name = document.querySelector("#username").value;
-    color = hexToRgb(document.querySelector("[type=color]").value);
-    localStorage.setItem("user", name);
-    socket.emit("user registration", {
-      user: name,
-      color: document.querySelector("[type=color]").value
-    });
+
+    if (name.lenght > 3) {
+      color = hexToRgb(document.querySelector("[type=color]").value);
+      localStorage.setItem("user", name);
+      socket.emit("user registration", {
+        user: name,
+        color: document.querySelector("[type=color]").value
+      });
+    } else {
+      alert("Please enter a user name");
+    }
+
     return false;
   });
   socket.on("user registration", function (e) {
