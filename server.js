@@ -34,6 +34,7 @@ app.get("/",(req,res)=>{
 
 io.on("connection",(ws)=>{
     let thisUser
+    
     io.emit("online users",users)
 
     ws.on("disconnect",(ws)=>{

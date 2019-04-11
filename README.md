@@ -37,3 +37,4 @@ This app is a muli-user drawing grid. Here you can draw and "Login" to create so
 - [ ] Serverside Snapshots
 - [ ] Clientside Snapshots
 - [ ] Mobile touch support
+- [ ] Better support for user input changes

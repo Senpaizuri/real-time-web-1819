@@ -20,10 +20,13 @@ main {
     box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.33);
     margin: auto;
     display: block;
-    height: 25rem;
-    width: 25rem;
+    max-height: 25rem;
+    max-width: 25rem;
+    height: 100%;
+    width: 100%;
     image-rendering: -moz-crisp-edges;
-    image-rendering: pixelated; }
+    image-rendering: pixelated;
+    cursor: crosshair; }
   main form {
     padding: 1rem; }
     main form label {
@@ -38,6 +41,12 @@ main {
         padding: .5rem .25rem;
         text-align: center;
         font-size: 1.25rem; }
+    main form [type="color"],
+    main form [type="submit"] {
+      display: block;
+      margin: auto; }
+    main form [type="submit"] {
+      padding: .5rem 1rem; }
   main #users ul {
     padding: .5rem 1rem;
     background: #fff;
