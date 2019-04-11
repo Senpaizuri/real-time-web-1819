@@ -55,7 +55,7 @@
     e.preventDefault();
     var name = document.querySelector("#username").value;
 
-    if (name.lenght > 3) {
+    if (name.value.length > 3) {
       color = hexToRgb(document.querySelector("[type=color]").value);
       localStorage.setItem("user", name);
       socket.emit("user registration", {
