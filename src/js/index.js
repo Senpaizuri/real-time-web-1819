@@ -1,7 +1,8 @@
 "use strict";
 
 (function () {
-  var paint = false;
+  var paint = false,
+      timer;
 
   var socket = io(),
       canvas = document.querySelector("canvas"),
@@ -57,8 +58,31 @@
       e.preventDefault();
       paint = false;
     });
+    canvas.addEventListener("mouseleave", function (e) {
+      e.preventDefault();
+      paint = false;
+    });
+  },
+      grid = function grid() {
+    console.log("booting grid");
+    var dimensions = {
+      "height": canvas.clientHeight,
+      "width": canvas.clientWidth
+    };
+
+    for (var i = 0; i < config.x; i++) {
+      var vLine = document.createElement("div"),
+          hLine = document.createElement("div");
+      vLine.classList.add("vLine");
+      vLine.setAttribute("style", "left:".concat(dimensions.height / config.x * (i + 1), "px;height:").concat(canvas.clientHeight, "px;"));
+      hLine.classList.add("hLine");
+      hLine.setAttribute("style", "top:".concat(dimensions.width / config.y * (i + 1), "px;width:").concat(canvas.clientHeight, "px;"));
+      canvas.parentElement.appendChild(vLine);
+      canvas.parentElement.appendChild(hLine);
+    }
   };
 
+  grid();
   var color = hexToRgb(document.querySelector("[type=color]").value);
   socket.on("pixel update", function (update) {
     var pos = update.pos,
@@ -111,16 +135,7 @@
       onlineCont.appendChild(newDiv);
     });
   });
-  socket.on("booting", function (e) {
-    if (e) {
-      document.body.classList.add("loading");
-    } else {
-      document.body.classList.remove("loading");
-    }
-  });
   socket.on("new word", function (e) {
-    console.log(e);
-
     if (document.querySelector("main h1")) {
       document.querySelector("main h1").innerHTML = e;
     } else {
@@ -128,6 +143,22 @@
       newH1.classList.add("itemName");
       newH1.innerHTML = e;
       document.querySelector("main").appendChild(newH1);
+    }
+
+    if (e.includes("session")) {} else {
+      timer = setInterval(function () {
+        var value = Number(document.querySelector("#timer span").innerHTML);
+        value -= 1;
+
+        if (value == 0) {
+          value = 30;
+          document.querySelector("#timer span").innerHTML = value;
+          clearInterval(timer);
+        } else {
+          document.querySelector("#timer span").innerHTML = value;
+          document.querySelector("#timer").classList.remove("hide");
+        }
+      }, 1000);
     }
   });
   socket.on("snapshot", function (e) {

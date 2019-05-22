@@ -1,6 +1,7 @@
 (()=>{
     let 
-        paint = false
+        paint = false,
+        timer
     const 
         socket = io(),
         canvas = document.querySelector("canvas"),
@@ -56,7 +57,34 @@
                 e.preventDefault()
                 paint = false
             })
+            canvas.addEventListener("mouseleave",(e)=>{
+                e.preventDefault()
+                paint = false
+            })
+        },
+        grid = ()=>{
+            console.log("booting grid")
+            let
+                dimensions = {
+                    "height":canvas.clientHeight,
+                    "width":canvas.clientWidth
+                }
+            for (let i = 0; i < config.x; i++) {
+                let
+                    vLine = document.createElement("div"),
+                    hLine = document.createElement("div")
+
+                vLine.classList.add("vLine")
+                vLine.setAttribute("style",`left:${(dimensions.height/config.x)*(i+1)}px;height:${canvas.clientHeight}px;`)
+                hLine.classList.add("hLine")
+                hLine.setAttribute("style",`top:${(dimensions.width/config.y)*(i+1)}px;width:${canvas.clientHeight}px;`)
+
+                canvas.parentElement.appendChild(vLine)
+                canvas.parentElement.appendChild(hLine)
+            }
         }
+
+    grid()
 
     let 
         color = hexToRgb(document.querySelector("[type=color]").value)
@@ -122,16 +150,7 @@
         })
     })
 
-    socket.on("booting",(e)=>{
-        if(e){
-            document.body.classList.add("loading")
-        }else{
-            document.body.classList.remove("loading")
-        }
-    })
-
     socket.on("new word",(e)=>{
-        console.log(e)
         if(document.querySelector("main h1")){
             document.querySelector("main h1").innerHTML = e
         }else{
@@ -140,6 +159,21 @@
             newH1.classList.add("itemName")
             newH1.innerHTML = e
             document.querySelector("main").appendChild(newH1)
+        }
+        if(e.includes("session")){
+        }else{
+            timer = setInterval(()=>{
+                let value = Number(document.querySelector("#timer span").innerHTML)
+                value -= 1
+                if(value == 0){
+                    value = 30
+                    document.querySelector("#timer span").innerHTML = value
+                    clearInterval(timer)
+                }else{
+                    document.querySelector("#timer span").innerHTML = value
+                    document.querySelector("#timer").classList.remove("hide")
+                }
+            },1000)
         }
     })
 

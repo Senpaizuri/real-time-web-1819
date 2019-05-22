@@ -80,13 +80,13 @@ let
                 io.emit("new word",`Draw this: <span>${res}</span>`)
             })
             generate = false
-            setTimeout(genWord,10000)
+            setTimeout(genWord,30000)
         }else{
             io.emit("new word",`The session has ended`)
+            generate = true
         }
     }
     
-
 http.listen(port,(a,b)=>{
-    console.log(`Active on port ${port}`)
+    console.log(`Exposed on port ${port}`)
 })

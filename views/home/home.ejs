@@ -1,6 +1,8 @@
 <% include ../partials/header.ejs %>
 <main>
-    <canvas height="30" width="30"></canvas>
+    <div id="canvasCont">
+        <canvas height="30" width="30"></canvas>
+    </div>
     <div id="online">
     </div>
     <div id="users">
@@ -15,5 +17,8 @@
         <ul></ul>
     </div>
     <div id="snapshots"></div>
+    <div id="timer" class="hide">
+        <span>29</span>s to go!
+    </div>
 </main>
 <% include ../partials/footer.ejs %>

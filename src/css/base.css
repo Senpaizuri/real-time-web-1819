@@ -18,16 +18,38 @@ main {
   padding: 2rem;
   display: flex;
   flex-direction: column; }
-  main canvas {
-    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.33);
+  main #timer {
+    transition: .3s ease all; }
+    main #timer.hide {
+      opacity: 0; }
+  main #canvasCont {
     margin: auto;
     display: block;
     height: 25rem;
     width: 25rem;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: pixelated;
-    cursor: crosshair;
-    order: 0; }
+    overflow: hidden;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.33); }
+    main #canvasCont canvas {
+      margin: auto;
+      display: block;
+      height: 25rem;
+      width: 25rem;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: pixelated;
+      cursor: crosshair;
+      order: 0; }
+    main #canvasCont .vLine {
+      border-left: 1px solid rgba(0, 0, 0, 0.33);
+      position: absolute;
+      height: 100%;
+      top: 0;
+      pointer-events: none; }
+    main #canvasCont .hLine {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.33);
+      position: absolute;
+      width: 100%;
+      left: 0;
+      pointer-events: none; }
   main h1 {
     order: 1;
     text-align: center;
