@@ -34,7 +34,9 @@ This app is a muli-user drawing grid. Here you can draw and "Login" to create so
 
 ## Wishlist
 
-- [ ] Serverside Snapshots
+- [ ] Serverside data presistance
+- [X] Serverside Snapshots
 - [ ] Clientside Snapshots
+- [X] Better draw support
 - [ ] Mobile touch support
 - [ ] Better support for user input changes
