@@ -1,6 +1,8 @@
 "use strict";
 
 (function () {
+  var paint = false;
+
   var socket = io(),
       canvas = document.querySelector("canvas"),
       config = {
@@ -16,8 +18,8 @@
       b: parseInt(result[3], 16)
     } : null;
   },
-      app = function app() {
-    canvas.addEventListener("mousemove", function (e) {
+      draw = function draw(e, click) {
+    if (paint || click) {
       var pos = {
         "x": Math.trunc(e.layerX / canvas.clientHeight * config.x),
         "y": Math.trunc(e.layerY / canvas.clientWidth * config.y)
@@ -37,6 +39,23 @@
         }
       });
       ctx.putImageData(pixel, pos.x, pos.y);
+    }
+  },
+      app = function app() {
+    canvas.addEventListener("mousemove", function (e) {
+      draw(e);
+    });
+    canvas.addEventListener("click", function (e) {
+      e.preventDefault();
+      draw(e, true);
+    });
+    canvas.addEventListener("mousedown", function (e) {
+      e.preventDefault();
+      paint = true;
+    });
+    canvas.addEventListener("mouseup", function (e) {
+      e.preventDefault();
+      paint = false;
     });
   };
 
@@ -91,5 +110,35 @@
       newDiv.appendChild(newSpan);
       onlineCont.appendChild(newDiv);
     });
+  });
+  socket.on("booting", function (e) {
+    if (e) {
+      document.body.classList.add("loading");
+    } else {
+      document.body.classList.remove("loading");
+    }
+  });
+  socket.on("new word", function (e) {
+    console.log(e);
+
+    if (document.querySelector("main h1")) {
+      document.querySelector("main h1").innerHTML = e;
+    } else {
+      var newH1 = document.createElement("h1");
+      newH1.classList.add("itemName");
+      newH1.innerHTML = e;
+      document.querySelector("main").appendChild(newH1);
+    }
+  });
+  socket.on("snapshot", function (e) {
+    var snapshot = canvas.toDataURL("image/png"),
+        snapCont = document.querySelector("#snapshots"),
+        newImg = document.createElement("img"),
+        newSpan = document.createElement("span");
+    newImg.src = snapshot;
+    newSpan.innerHTML = document.querySelector(".itemName span").innerHTML;
+    newSpan.appendChild(newImg);
+    snapCont.appendChild(newSpan);
+    ctx.clearRect(0, 0, config.x, config.y);
   });
 })();

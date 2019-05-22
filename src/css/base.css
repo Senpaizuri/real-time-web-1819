@@ -15,19 +15,27 @@ body {
   background: #f1f1f1; }
 
 main {
-  padding: 2rem; }
+  padding: 2rem;
+  display: flex;
+  flex-direction: column; }
   main canvas {
     box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.33);
     margin: auto;
     display: block;
-    max-height: 25rem;
-    max-width: 25rem;
-    height: 100%;
-    width: 100%;
+    height: 25rem;
+    width: 25rem;
     image-rendering: -moz-crisp-edges;
     image-rendering: pixelated;
-    cursor: crosshair; }
+    cursor: crosshair;
+    order: 0; }
+  main h1 {
+    order: 1;
+    text-align: center;
+    margin: 1.5rem;
+    padding: 1rem;
+    font-size: 1.33rem; }
   main form {
+    order: 2;
     padding: 1rem; }
     main form label {
       margin: auto;
@@ -47,16 +55,19 @@ main {
       margin: auto; }
     main form [type="submit"] {
       padding: .5rem 1rem; }
-  main #users ul {
-    padding: .5rem 1rem;
-    background: #fff;
-    transform: rotate(180deg); }
-    main #users ul li {
-      margin: .5rem auto;
-      text-align: center;
-      transform: rotate(-180deg); }
+  main #users {
+    order: 2; }
+    main #users ul {
+      padding: .5rem 1rem;
+      background: #fff;
+      transform: rotate(180deg); }
+      main #users ul li {
+        margin: .5rem auto;
+        text-align: center;
+        transform: rotate(-180deg); }
   main #online {
-    padding: 2rem;
+    order: 2;
+    padding: 0 2rem;
     display: flex;
     justify-content: center;
     flex-wrap: wrap; }

@@ -3,26 +3,19 @@ const
     app = express(),
     http= require("http").Server(app),
     ejs = require("ejs"),
+    fetch = require("node-fetch"),
     compression = require("compression"),
     io = require("socket.io")(http),
-    port = process.env.PORT || 5000
+    port = process.env.PORT || 5000,
+    apiUrl = {
+        "title":"Random Item API",
+        "url":"http://roger.redevised.com/api/v1/"
+    }
 
-let users = []
-let online = []
-let check = (str,arr)=>{
-    let q = false
-    let x = 0
-    arr.forEach((el,i) => {
-        if(arr[i].user == str){
-            q = true
-            x = i
-        } else{
-            q = false
-            x = i
-        }
-    })
-    return {q:q,x:x}
-}
+let 
+    users = [],
+    online = [],
+    generate = true
 
 app.use(compression())
 app.use(express.static("src"))
@@ -67,8 +60,32 @@ io.on("connection",(ws)=>{
             users[online.indexOf(user)].color = update.color
         }
         io.emit("online users",users)
+        if(users.length >= 2 && generate == true){
+            genWord()
+        }
     })
 })
+
+let
+    getWord = async ()=>{
+       let word = await fetch(apiUrl.url).then(res => res.text()).catch(err => "tree")
+       return word
+    },
+    genWord = ()=>{
+        if(generate == false){
+            io.emit("snapshot",true)
+        }
+        if(users.length >= 2){
+            getWord().then(res => {
+                io.emit("new word",`Draw this: <span>${res}</span>`)
+            })
+            generate = false
+            setTimeout(genWord,10000)
+        }else{
+            io.emit("new word",`The session has ended`)
+        }
+    }
+    
 
 http.listen(port,(a,b)=>{
     console.log(`Active on port ${port}`)

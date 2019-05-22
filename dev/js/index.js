@@ -1,4 +1,6 @@
 (()=>{
+    let 
+        paint = false
     const 
         socket = io(),
         canvas = document.querySelector("canvas"),
@@ -12,30 +14,47 @@
                 b: parseInt(result[3], 16)
             } : null
         },
+        draw = (e,click)=>{
+            if(paint || click){
+                const 
+                pos = {
+                    "x":Math.trunc((e.layerX/canvas.clientHeight)*config.x),
+                    "y":Math.trunc((e.layerY/canvas.clientWidth)*config.y)
+                },
+                pixel = ctx.createImageData(1,1)
+                                
+            pixel.data[0] = color.r  
+            pixel.data[1] = color.g  
+            pixel.data[2] = color.b
+            pixel.data[3] = 255
+    
+            socket.emit("pixel update",{
+                pos,
+                "pixel":{
+                    r:pixel.data[0],
+                    g:pixel.data[1],
+                    b:pixel.data[2],
+                    a:pixel.data[3]
+                }
+            })
+            ctx.putImageData(pixel,pos.x,pos.y)
+            }
+        },
         app = ()=>{
             canvas.addEventListener("mousemove",(e)=>{
-                const 
-                    pos = {
-                        "x":Math.trunc((e.layerX/canvas.clientHeight)*config.x),
-                        "y":Math.trunc((e.layerY/canvas.clientWidth)*config.y)
-                    },
-                    pixel = ctx.createImageData(1,1)
-                                    
-                pixel.data[0] = color.r  
-                pixel.data[1] = color.g  
-                pixel.data[2] = color.b
-                pixel.data[3] = 255
-        
-                socket.emit("pixel update",{
-                    pos,
-                    "pixel":{
-                        r:pixel.data[0],
-                        g:pixel.data[1],
-                        b:pixel.data[2],
-                        a:pixel.data[3]
-                    }
-                })
-                ctx.putImageData(pixel,pos.x,pos.y)
+                draw(e)
+            })
+            canvas.addEventListener("click",(e)=>{
+                e.preventDefault()
+                draw(e,true)
+            })
+            canvas.addEventListener("mousedown",(e)=>{
+                e.preventDefault()
+                paint = true
+            })
+            canvas.addEventListener("mouseup",(e)=>{
+                e.preventDefault()
+                paint = false
             })
         }
 
@@ -101,6 +120,44 @@
             newDiv.appendChild(newSpan)
             onlineCont.appendChild(newDiv)
         })
+    })
+
+    socket.on("booting",(e)=>{
+        if(e){
+            document.body.classList.add("loading")
+        }else{
+            document.body.classList.remove("loading")
+        }
+    })
+
+    socket.on("new word",(e)=>{
+        console.log(e)
+        if(document.querySelector("main h1")){
+            document.querySelector("main h1").innerHTML = e
+        }else{
+            let
+                newH1 = document.createElement("h1")
+            newH1.classList.add("itemName")
+            newH1.innerHTML = e
+            document.querySelector("main").appendChild(newH1)
+        }
+    })
+
+    socket.on("snapshot",(e)=>{
+        let
+            snapshot = canvas.toDataURL("image/png"),
+            snapCont = document.querySelector("#snapshots"),
+            newImg = document.createElement("img"),
+            newSpan = document.createElement("span")
+
+        newImg.src = snapshot
+
+        newSpan.innerHTML = document.querySelector(".itemName span").innerHTML
+        newSpan.appendChild(newImg)
+
+        snapCont.appendChild(newSpan)
+
+        ctx.clearRect(0,0,config.x,config.y)
     })
 
 })()
