@@ -24,7 +24,7 @@ However if you want to run the build locally you can run:
 
 This app is a multi-user drawing grid. Here you can draw and "Login" to create some pixel art together.
 
-The app provides the topics, you have a 60s window to create the pixelart!
+The app provides the topics, you have a 30s window to create the pixelart!
 
 ## Dependencies used to run this app
 
@@ -36,7 +36,7 @@ The app provides the topics, you have a 60s window to create the pixelart!
 
 ## Data cycle
 
-![Diagram](./diagram.jpg)
+![Diagram of data cycles](./diagram.jpg)
 
 ## Api
 [**Roger's random object generator**](http://roger.redevised.com/)
@@ -71,7 +71,9 @@ Each pixel that is updated is send to the server and send back to the other user
 
 After a 60s interval, a snapshot is created on the client and "saved". The canvas is then cleared and a new topic is supplied.
 
-Sample data:
+<details>
+<summary>Sample data</summary>
+
 ```Javascript
     // User registration
     {
@@ -92,9 +94,13 @@ Sample data:
         }
     }
 ```
+
+</details>
+
 ## // Sidenotes
 
-### Data Model on the server
+<details>
+<summary>Data Model on the server</summary>
 
 I tried to push the pixel updates to the server but ran into multiple problems.
 
@@ -104,6 +110,9 @@ You however can loop through each value and change it that way.
 When I tried this approach of setting each array value the array came out botched with the right values in the wrong places.
 
 Since I also had to push the individual pixels to the array it became to much I put it on the backlog for another time.
+</details>
+
+
 
 ## Wishlist
 
