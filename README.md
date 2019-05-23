@@ -120,6 +120,6 @@ Since I also had to push the individual pixels to the array it became to much I 
 - [x] Better draw support
 - [x] Clientside Snapshots
 - [ ] Mobile touch support
-- [ ] Serverside data presistance
+- [ ] Serverside data persistence
 - [ ] Serverside Snapshots
 - [ ] Proper save mechanism
