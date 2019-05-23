@@ -151,7 +151,7 @@
         value -= 1;
 
         if (value == 0) {
-          value = 30;
+          value = 9;
           document.querySelector("#timer span").innerHTML = value;
           clearInterval(timer);
         } else {

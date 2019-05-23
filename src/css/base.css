@@ -19,7 +19,11 @@ main {
   display: flex;
   flex-direction: column; }
   main #timer {
-    transition: .3s ease all; }
+    transition: .3s ease all;
+    text-align: center;
+    padding: 1rem;
+    padding-bottom: 0;
+    font-size: 1.25rem; }
     main #timer.hide {
       opacity: 0; }
   main #canvasCont {
@@ -82,7 +86,9 @@ main {
     main #users ul {
       padding: .5rem 1rem;
       background: #fff;
-      transform: rotate(180deg); }
+      transform: rotate(180deg);
+      max-height: 10rem;
+      overflow-x: scroll; }
       main #users ul li {
         margin: .5rem auto;
         text-align: center;
@@ -99,3 +105,20 @@ main {
         height: 2rem;
         width: 2rem;
         margin: .5rem auto; }
+  main #snapshots {
+    order: 10;
+    display: flex;
+    overflow-x: scroll; }
+    main #snapshots span {
+      display: flex;
+      justify-content: center;
+      flex-direction: column-reverse;
+      background: white;
+      text-align: center;
+      padding: .5rem; }
+      main #snapshots span img {
+        height: 7.5rem;
+        width: 7.5rem;
+        image-rendering: -moz-crisp-edges;
+        image-rendering: pixelated;
+        margin: auto; }

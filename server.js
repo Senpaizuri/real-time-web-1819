@@ -80,7 +80,7 @@ let
                 io.emit("new word",`Draw this: <span>${res}</span>`)
             })
             generate = false
-            setTimeout(genWord,30000)
+            setTimeout(genWord,10000)
         }else{
             io.emit("new word",`The session has ended`)
             generate = true
