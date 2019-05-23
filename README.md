@@ -34,6 +34,10 @@ The app provides the topics, you have a 60s window to create the pixelart!
 - EJS
 - Gulp.js (tooling)
 
+## Data cycle
+
+![Diagram](./diagram.jpg)
+
 ## Api
 [**Roger's random object generator**](http://roger.redevised.com/)
 This api generates random object without the obsecure words.
@@ -52,6 +56,12 @@ This app uses roughly 2 types of data,
 ### API
 The api data in itself is minimal, but it has no other need then to supply the subject for the drawings.
 
+The API uses a `REST` interface and returns us with a string.
+```
+   > Lipstick
+   > Water Bottle
+```
+
 ### USER
 The user generated data is a bit more complex.
 The user is "logged" in by signing up with a user name.
@@ -60,6 +70,40 @@ You can draw on the grid by simply clicking or draging.
 Each pixel that is updated is send to the server and send back to the other users in real time.
 
 After a 60s interval, a snapshot is created on the client and "saved". The canvas is then cleared and a new topic is supplied.
+
+Sample data:
+```Javascript
+    // User registration
+    {
+        user: "Senpaizuri", 
+        color: "#be3f00"
+    }
+    // Pixel updates
+    {
+        pos:{
+            x: 22, 
+            y: 10
+        }, 
+        pixel:{
+            r: 0,   
+            g: 198, 
+            b: 0, 
+            a: 255
+        }
+    }
+```
+## // Sidenotes
+
+### Data Model on the server
+
+I tried to push the pixel updates to the server but ran into multiple problems.
+
+The canvas can be abstracted to an `Array` from the `canvas.getImageData(x,y)`. However this is only getter data. You *cannot* directly set it to be something else.
+You however can loop through each value and change it that way.
+
+When I tried this approach of setting each array value the array came out botched with the right values in the wrong places.
+
+Since I also had to push the individual pixels to the array it became to much I put it on the backlog for another time.
 
 ## Wishlist
 
