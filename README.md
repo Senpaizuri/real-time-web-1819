@@ -3,7 +3,7 @@
 
 ## Installing the app
 
-The app already runs 🔥 [here](letsdrawstuff.herokuapp.com) 🔥.
+The app already runs 🔥 [here](https://letsdrawstuff.herokuapp.com) 🔥.
 However if you want to run the build locally you can run:
 ```bash
     # Install packages
